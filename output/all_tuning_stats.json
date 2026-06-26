@@ -1,0 +1,18 @@
+{
+    "Trial_1_Baseline": {
+        "best_val_loss": 1.3055893182754517,
+        "history": []
+    },
+    "Trial_2_Fast_Learner": {
+        "best_val_loss": 1.4445477724075317,
+        "history": []
+    },
+    "Trial_3_High_Reg": {
+        "best_val_loss": 1.505711317062378,
+        "history": []
+    },
+    "Trial_4_Conservative": {
+        "best_val_loss": 1.4027602672576904,
+        "history": []
+    }
+}

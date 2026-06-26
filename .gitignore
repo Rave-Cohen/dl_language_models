@@ -1,0 +1,13 @@
+# Ignore heavy PyTorch checkpoint files everywhere
+*.pt
+
+# Ignore the raw data zip file
+*.zip
+
+# Ignore all log outputs inside the outputs/ directory
+outputs/*.out
+outputs/*.err
+
+# Ignore Python cache directories
+__pycache__/
+*.pyc

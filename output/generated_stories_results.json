@@ -1,0 +1,32 @@
+{
+    "meta": {
+        "selected_architecture": "Arch_1_Baseline",
+        "parameters": {
+            "max_new_tokens": 200,
+            "temperature": 0.8,
+            "top_k": 50
+        }
+    },
+    "stories": {
+        "story_1": {
+            "prompt": "Once upon a time",
+            "story": "Once upon a time, there was a big bear named Stretch who was feeling very miserable. Stretch had a friend named Max who was always asking him to be quiet. One day, Stretch and Max went to the mall to see where the mall was happening. When they got to the mall, they saw a group of kids playing with a ball and some of it was very noisy. Smotch was so happy and sang along with Max. Suddenly, a little girl named Lily came over and saw the big bear."
+        },
+        "story_2": {
+            "prompt": "In a small village",
+            "story": "In a small village, there was a little girl named Lily. She loved to play outside and explore the woods. One day, she went to the park to play and met a friendly bird. The bird was so happy to see Lily. \"Hello, Lily!\" said the bird. \"I am a great friend. Do you want to play with me?\" Lily nodded and said, \"Yes, I would love to play with you, but I don't like to complain. A place me like to talk to me."
+        },
+        "story_3": {
+            "prompt": "There was a little dragon",
+            "story": "There was a little dragon. The dragon was sad because the dragon was lost and didn't know what to do with its sword. Suddenly, the dragon flew up to the star and said, \"I am sorry, I can't find my sword. Can you help me?\" The dragon was happy and said, \"Yes, I can help. I can help you. I can carry the sword to make the dragon safe.\" The dragon flew around the dragon and they became friends. They played together and had lots of fun."
+        },
+        "story_4": {
+            "prompt": "The sun was setting when",
+            "story": "The sun was setting when it was hot, and the stars twinkle. But the little boy was so tired. He wanted to go play, but instead he had a lie that fit him perfectly. The next day, the little boy noticed that the star was only shape. He was so happy, even though he had gained a little boy who was only three years old. He thanked the star for the advice before leaving, and then went home with his mum."
+        },
+        "story_5": {
+            "prompt": "A brave rabbit named Shuki",
+            "story": "A brave rabbit named Shuki. Sprhel had a very special gift and her friends called Sprhel. She said she wanted to give Sprhel a present. Spru was so excited and ran to the tree. Sprunei and her friends were playing in the park. They had a great time, but they were all having a great time. The moral of the story is that when we share, we should be careful, but it can have fun later with something special. We should be proud of what we have for our friends."
+        }
+    }
+}
