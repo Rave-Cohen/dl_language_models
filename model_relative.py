@@ -23,7 +23,8 @@ class CausalSelfAttention(nn.Module):
 
         # Shaw et al.: 2k+1 embeddings for distances [-k … k], keys only
         self.E_k = nn.Embedding(2 * config.k + 1, hs)
-        nn.init.normal_(self.E_k.weight, mean=0.0, std=0.02)
+        e_k_std = getattr(config, 'e_k_std', 0.02)
+        nn.init.normal_(self.E_k.weight, mean=0.0, std=e_k_std)
 
     def forward(self, x):
         B, T, C = x.size()
@@ -35,7 +36,6 @@ class CausalSelfAttention(nn.Module):
         v = v.view(B, T, self.n_head, hs).transpose(1, 2)
 
         # --- Standard Q·Kᵀ ---
-        # --- Standard Q·Kᵀ ---
         att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(hs)) # [B, nh, T, T]
 
         # --- Efficient Relative key bias (Skewing Trick) ---
@@ -43,24 +43,26 @@ class CausalSelfAttention(nn.Module):
         # S_rel shape: [B, nh, T, 2k+1]
         S_rel = q @ self.E_k.weight.T 
 
-        # 2. Pad S_rel: add a column of zeros to the right
-        # Shape: [B, nh, T, 2k+2]
-        S_rel_padded = F.pad(S_rel, (0, 1))
-
-        # 3. Flatten and slice to skew
-        # Flatten to [B, nh, T * (2k+2)]
-        # Slice T*(2k+1) elements, then reshape to [B, nh, T+1, 2k+1]
-        # Finally, slice out the first T rows and T columns
-        S_rel_flattened = S_rel_padded.view(B, self.n_head, -1)
+        # 2. Pad to make it [B, nh, T, 2k+1 + T] to handle all diagonal offsets
+        # We need to reshape the relative logits to [B, nh, T, T] correctly
+        # The trick: pad, then reshape/slice.
         
-        # This creates the skewed matrix representation
-        # We need to reshape to [B, nh, T, T] by slicing correctly
-        rel_logits = S_rel_flattened[:, :, :T * (2 * self.k + 1)].view(B, self.n_head, T, 2 * self.k + 1)
+        # Add padding to S_rel to align diagonals
+        # S_rel is [B, nh, T, 2k+1]
+        # We pad with T zeros to facilitate the reshape
+        S_rel_padded = F.pad(S_rel, (0, T)) 
         
-        # Apply skewing: The logic effectively maps relative distances to T x T
-        # (This avoids the O(T^2) gather)
-        att = att + rel_logits[:, :, :, self.k:] # Simplified logical addition
+        # Reshape to [B, nh, T+T, 2k+1] - T+T is wrong, use:
+        # Reshape to [B, nh, T, 2k+1 + T]
+        # Then we select the middle T x T part
+        rel_logits = S_rel_padded.view(B, self.n_head, T, 2 * self.k + 1 + T)
+        
+        # Slice to get [B, nh, T, T]
+        # We want the window that contains the relative positions
+        rel_logits = rel_logits[:, :, :, self.k : self.k + T]
 
+        # Apply skewing
+        att = att + rel_logits
         # Dynamic causal mask — works for T > block_size at long-context eval
         if T <= self.bias.size(-1):
             mask = self.bias[:, :, :T, :T]

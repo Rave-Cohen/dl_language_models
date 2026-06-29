@@ -2,7 +2,7 @@
 #SBATCH --job-name=ass3_notebook
 #SBATCH --output=outputs/ass3_train_%j.out
 #SBATCH --error=outputs/ass3_train_%j.err
-#SBATCH --partition=course
+#SBATCH --partition=course     
 #SBATCH --qos=course
 #SBATCH --time=24:00:00
 #SBATCH --gres=gpu:1
@@ -17,14 +17,15 @@ source $(conda info --base)/etc/profile.d/conda.sh
 # 2. Activate your environment
 conda activate neuro_dl
 
-# 3. Create necessary folders (Fixed paths)
+# 3. Create folders
 mkdir -p outputs
 mkdir -p output 
 
-# 4. Run the notebook
-echo "🚀 Starting Assignment 3 Notebook Execution on $(hostname)"
+# 4. Run the script (If you must use the notebook)
+echo "🚀 Starting job on $(hostname)"
 
-# Fixed path: Just look for main.ipynb in the current directory!
-jupyter nbconvert --to notebook --execute --inplace main.ipynb
+# It is highly recommended to run a .py file instead of a .ipynb file
+# If you must run the notebook, use:
+jupyter nbconvert --execute --to notebook --inplace --ExecutePreprocessor.timeout=-1 main.ipynb
 
 echo "🎉 Job finished!"
