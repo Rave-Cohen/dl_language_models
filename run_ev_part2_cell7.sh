@@ -26,6 +26,5 @@ echo "🚀 Starting job on $(hostname)"
 
 # It is highly recommended to run a .py file instead of a .ipynb file
 # If you must run the notebook, use:
-jupyter nbconvert --execute --to notebook --inplace --ExecutePreprocessor.timeout=-1 318624871_209279173.ipynb
-
+python ev_part2_cell7.py
 echo "🎉 Job finished!"
